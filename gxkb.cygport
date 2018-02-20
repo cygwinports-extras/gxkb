@@ -1,0 +1,27 @@
+NAME="gxkb"
+VERSION=0.7.9
+RELEASE=1
+CATEGORY="X11"
+SUMMARY="X11 keyboard layout switcher"
+DESCRIPTION="gxkb is a tiny indicator applet which allows to quickly switch
+between different keyboard layouts in X. A flag corresponding to the country
+of the active layout is shown in the indicator area."
+HOMEPAGE="https://zen-tools.github.io/gxkb/"
+flags0=1d382a9ea87667ac59c493b8fd771f49ce837e6a
+SRC_URI="
+	https://github.com/zen-tools/gxkb/archive/v${VERSION}/gxkb-v${VERSION}.tar.gz
+	https://github.com/gosquared/flags/archive/${flags0}/flags-${flags0}.tar.gz
+"
+
+src_install() {
+	cd ${B}
+	cyginstall
+
+	pushd ${S}/../flags-${flags0}/flags/flags-iso/shiny/24/
+	insinto /usr/share/gxkb/flags
+	for flag in [^_]*.png
+	do
+		newins $flag ${flag,,}
+	done
+	popd
+}
